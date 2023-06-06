@@ -20,6 +20,7 @@ import {
   Routes,
   Route,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import { SideBar } from "./sidebar";
 import { useAppConfig } from "../store/config";
@@ -46,6 +47,10 @@ const NewChat = dynamic(async () => (await import("./new-chat")).NewChat, {
 });
 
 const MaskPage = dynamic(async () => (await import("./mask")).MaskPage, {
+  loading: () => <Loading noLogo />,
+});
+
+const ErrPage = dynamic(async () => (await import("./err")).Err, {
   loading: () => <Loading noLogo />,
 });
 
@@ -104,7 +109,24 @@ function Screen() {
   const isHome = location.pathname === Path.Home;
   const isMobileScreen = useMobileScreen();
 
+  const navigate = useNavigate();
   useEffect(() => {
+    // 读取地址栏参数
+    const queryParams = new URLSearchParams(location.search);
+    console.log("参数", queryParams.get("cid"));
+    const cid = queryParams.get("cid");
+
+    // 看看缓存中有没有用户信息
+    const storageCid = localStorage.getItem("cid");
+    if (storageCid) {
+      console.log("缓存中有用户信息，可以继续使用");
+    } else if (cid) {
+      console.log("没有用户信息");
+      localStorage.setItem("cid", cid);
+    } else {
+      console.log("禁止访问");
+      navigate(Path.Err);
+    }
     loadAsyncGoogleFont();
   }, []);
 
@@ -128,6 +150,7 @@ function Screen() {
           <Route path={Path.Masks} element={<MaskPage />} />
           <Route path={Path.Chat} element={<Chat />} />
           <Route path={Path.Settings} element={<Settings />} />
+          <Route path={Path.Err} element={<ErrPage />} />
         </Routes>
       </div>
     </div>
@@ -136,7 +159,6 @@ function Screen() {
 
 export function Home() {
   useSwitchTheme();
-
   if (!useHasHydrated()) {
     return <Loading />;
   }

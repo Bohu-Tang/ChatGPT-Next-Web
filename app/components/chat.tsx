@@ -690,14 +690,16 @@ export function Chat() {
               onClick={() => navigate(Path.Home)}
             />
           </div>
-          <div className="window-action-button">
+          {/* 编辑标题 */}
+          {/* <div className="window-action-button">
             <IconButton
               icon={<RenameIcon />}
               bordered
               onClick={renameSession}
             />
-          </div>
-          <div className="window-action-button">
+          </div> */}
+          {/* 导出聊天记录 */}
+          {/* <div className="window-action-button">
             <IconButton
               icon={<ExportIcon />}
               bordered
@@ -706,7 +708,7 @@ export function Chat() {
                 setShowExport(true);
               }}
             />
-          </div>
+          </div> */}
           {!isMobileScreen && (
             <div className="window-action-button">
               <IconButton
@@ -839,8 +841,8 @@ export function Chat() {
 
       <div className={styles["chat-input-panel"]}>
         <PromptHints prompts={promptHints} onPromptSelect={onPromptSelect} />
-
-        <ChatActions
+        {/* 输入框工具栏 */}
+        {/* <ChatActions
           showPromptModal={() => setShowPromptModal(true)}
           scrollToBottom={scrollToBottom}
           hitBottom={hitBottom}
@@ -855,7 +857,7 @@ export function Chat() {
             setUserInput("/");
             onSearch("");
           }}
-        />
+        /> */}
         <div className={styles["chat-input-panel-inner"]}>
           <textarea
             ref={inputRef}
